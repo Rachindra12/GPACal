@@ -127,6 +127,20 @@
   <div class="container">
     <h1>GPA Calculator</h1>
     <h3>B.Tech in Media Arts and Production Technology</h3>
+    <button class="toggle-button" onclick="toggleContent('howToUse')">
+  ℹ️ How to Use This GPA Calculator
+</button>
+<div id="howToUse" class="toggle-content hidden">
+  <ol>
+    <li>Select your semester from the dropdown menu at the top.</li>
+    <li>The subjects and their credits for that semester will appear automatically.</li>
+    <li>Choose your grade for each subject from the dropdown list.</li>
+    <li>The SGPA (for selected semester) and FGPA (overall GPA) will calculate automatically.</li>
+    <li>You can change grades anytime to instantly update the result.</li>
+    <li>No need to click any "Calculate" button — everything works instantly!</li>
+  </ol>
+</div>
+
     <label for="semester-select">Select Semester:</label>
     <select id="semester-select">
       <option value="">--Select--</option>
