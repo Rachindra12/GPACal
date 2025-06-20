@@ -17,12 +17,6 @@
       background: #f7f7f7;
       padding: 20px;
     }
-    #degree-class {
-    font-size: 1.1rem;
-    padding-top: 10px;
-    color: #006400;
-  }
-
     .toggle-button {
   background-color: #f0f0f0;
   border: 1px solid #ccc;
@@ -164,8 +158,6 @@
       <h3><b>Semester GPA: <span id="sgpa">--</span></b></h3>
       <h3><b>Final GPA: <span id="fgpa">--</span></b></h3>
     </div>
-    <div id="degree-class" style="margin-top: 15px; font-weight: bold; color: #007b00;"></div>
-
     <div class="grade-scale">
     <h2>Grades and Grade Points</h2>
       <table>
@@ -399,31 +391,6 @@ The formula for calculating SGPA is given below. </p>
           totalPoints += gradePoints[grade] * credit;
           totalCredits += credit;    
         }
-        // Count how many semesters are completed
-const completedSemesters = cumulativeData.filter(data => data && data.credits > 0).length;
-
-const degreeClassDiv = document.getElementById('degree-class');
-degreeClassDiv.textContent = ''; // Reset first
-
-if (completedSemesters === 6 && cumCredits > 0) {
-  let message = '';
-  const fgpaValue = cumPoints / cumCredits;
-
-  if (fgpaValue >= 3.7) {
-    message = '🎓 Congratulations! You got First Class!!';
-  } else if (fgpaValue >= 3.30) {
-    message = '🎉 Well done! You got Second Upper Class!';
-  } else if (fgpaValue >= 2.70) {
-    message = '👏 You got Second Lower Class.';
-  } else if (fgpaValue >= 2.00) {
-    message = '👍 You passed with an Ordinary Degree.';
-  } else {
-    message = '⚠️ Status: Incomplete. Please improve your results.';
-  }
-
-  degreeClassDiv.textContent = message;
-}
-
       });
 
       const sgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '--';
