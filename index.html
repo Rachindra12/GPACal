@@ -155,8 +155,9 @@
     <div id="subjects-container"></div>
 
     <div class="gpa-display">
-      <h3><b>Semester GPA: <span id="sgpa">--</span></b></h3>
-      <h3><b>Final GPA: <span id="fgpa">--</span></b></h3>
+      <h3><b>SEMESTER GPA: <span id="sgpa">--</span></b></h3>
+      <h3><b>FINAL GPA: <span id="fgpa">--</span></b></h3>
+      <h3><span id="degree-class">--</span></h3>
     </div>
     <div class="grade-scale">
     <h2>Grades and Grade Points</h2>
@@ -264,154 +265,178 @@ The formula for calculating SGPA is given below. </p>
 
 
   <script>
-    function toggleContent(id) {
-  const section = document.getElementById(id);
-  section.classList.toggle('hidden');
-}
+  function toggleContent(id) {
+    const section = document.getElementById(id);
+    section.classList.toggle('hidden');
+  }
 
-    const semesters = {
-      1: [
-        { code: 'SUB101', name: 'Fundamentals of Mass Communication', credit: 6 },
-        { code: 'SUB102', name: 'Basic Technologies of Print Media', credit: 4 },
-        { code: 'SUB103', name: 'Basic Technologies of Television Medium', credit: 4 },
-        { code: 'SUB104', name: 'Basic Technologies of Radio Medium', credit: 4 },
-        { code: 'SUB105', name: 'Basic Technologies of New Media', credit: 4 },
-        { code: 'SUB106', name: 'Techniques of Media Arts  Product Development', credit: 4 },
-        { code: 'SUB107', name: 'Mathematics for Media Arts Production Technology', credit: 3 },
-        { code: 'SUB108', name: 'Communication Skills in English I', credit: 3 },
-      ],
-      2: [
-        { code: 'SUB101', name: 'Evolution of Mass Media I', credit: 6 },
-        { code: 'SUB102', name: 'Production Aspects of Print Media', credit: 4 },
-        { code: 'SUB103', name: 'Production Aspects of Television Medium', credit: 4 },
-        { code: 'SUB104', name: 'Production Aspects of Radio Medium', credit: 4 },
-        { code: 'SUB105', name: 'Production Aspects of New Media', credit: 4 },
-        { code: 'SUB106', name: 'Development of Sri Lankan Media I', credit: 4 },
-        { code: 'SUB107', name: 'Theorizing Convergence Media', credit: 3 },
-        { code: 'SUB108', name: 'Communication Skills in English II', credit: 3 },
-      
-      ],
-      3: [
-        { code: 'SUB101', name: 'Production Management in Media Arts', credit: 4 },
-        { code: 'SUB102', name: 'Designing Techniques of Print Media', credit: 4 },
-        { code: 'SUB103', name: 'Designing Techniques of Television Medium', credit: 4 },
-        { code: 'SUB104', name: 'Designing Techniques of Radio Medium', credit: 4 },
-        { code: 'SUB105', name: 'Designing Techniques of New Media', credit: 4 },
-        { code: 'SUB106', name: 'Elements of Art and Design', credit: 4 },
-        { code: 'SUB107', name: 'Group Project I', credit: 6 },
-      ],
-      4: [
-        { code: 'SUB101', name: 'Media Research Methods and Methodologies', credit: 6 },
-        { code: 'SUB102', name: 'Advanced Production Techniques of Print Media', credit: 4 },
-        { code: 'SUB103', name: 'Advanced Production Techniques of Television Medium', credit: 4 },
-        { code: 'SUB104', name: 'Advanced Production Techniques of Radio Medium', credit: 4 },
-        { code: 'SUB105', name: 'Advanced Production Techniques of New Media', credit: 4 },
-        { code: 'SUB106', name: 'Development of Sri Lankan Media II', credit: 4 },
-        { code: 'SUB107', name: 'Individual Project I', credit: 6 },
-      ],
-      5: [
-        { code: 'SUB101', name: 'Industrial Training', credit: 18 },
-      ],
-      6: [
-        { code: 'SUB101', name: 'Media Arts Theory and Criticism', credit: 4 },
-        { code: 'SUB102', name: 'Media Marketing and Advertising', credit: 4 },
-        { code: 'SUB103', name: 'Management in Media Industry', credit: 4 },
-        { code: 'SUB104', name: 'Occupational Safety and Health in Media Arts Production Trade', credit: 2 },
-        { code: 'SUB105', name: 'Entrepreneurship Development in Media Trade', credit: 4 },
-        { code: 'SUB106', name: 'Final Project for General Degree', credit: 18 },
-      ]
-      // Add more semesters...
-    };
+  const semesters = {
+    1: [
+      { code: 'SUB101', name: 'Fundamentals of Mass Communication', credit: 6 },
+      { code: 'SUB102', name: 'Basic Technologies of Print Media', credit: 4 },
+      { code: 'SUB103', name: 'Basic Technologies of Television Medium', credit: 4 },
+      { code: 'SUB104', name: 'Basic Technologies of Radio Medium', credit: 4 },
+      { code: 'SUB105', name: 'Basic Technologies of New Media', credit: 4 },
+      { code: 'SUB106', name: 'Techniques of Media Arts  Product Development', credit: 4 },
+      { code: 'SUB107', name: 'Mathematics for Media Arts Production Technology', credit: 3 },
+      { code: 'SUB108', name: 'Communication Skills in English I', credit: 3 },
+    ],
+    2: [
+      { code: 'SUB101', name: 'Evolution of Mass Media I', credit: 6 },
+      { code: 'SUB102', name: 'Production Aspects of Print Media', credit: 4 },
+      { code: 'SUB103', name: 'Production Aspects of Television Medium', credit: 4 },
+      { code: 'SUB104', name: 'Production Aspects of Radio Medium', credit: 4 },
+      { code: 'SUB105', name: 'Production Aspects of New Media', credit: 4 },
+      { code: 'SUB106', name: 'Development of Sri Lankan Media I', credit: 4 },
+      { code: 'SUB107', name: 'Theorizing Convergence Media', credit: 3 },
+      { code: 'SUB108', name: 'Communication Skills in English II', credit: 3 },
+    ],
+    3: [
+      { code: 'SUB101', name: 'Production Management in Media Arts', credit: 4 },
+      { code: 'SUB102', name: 'Designing Techniques of Print Media', credit: 4 },
+      { code: 'SUB103', name: 'Designing Techniques of Television Medium', credit: 4 },
+      { code: 'SUB104', name: 'Designing Techniques of Radio Medium', credit: 4 },
+      { code: 'SUB105', name: 'Designing Techniques of New Media', credit: 4 },
+      { code: 'SUB106', name: 'Elements of Art and Design', credit: 4 },
+      { code: 'SUB107', name: 'Group Project I', credit: 6 },
+    ],
+    4: [
+      { code: 'SUB101', name: 'Media Research Methods and Methodologies', credit: 6 },
+      { code: 'SUB102', name: 'Advanced Production Techniques of Print Media', credit: 4 },
+      { code: 'SUB103', name: 'Advanced Production Techniques of Television Medium', credit: 4 },
+      { code: 'SUB104', name: 'Advanced Production Techniques of Radio Medium', credit: 4 },
+      { code: 'SUB105', name: 'Advanced Production Techniques of New Media', credit: 4 },
+      { code: 'SUB106', name: 'Development of Sri Lankan Media II', credit: 4 },
+      { code: 'SUB107', name: 'Individual Project I', credit: 6 },
+    ],
+    5: [
+      { code: 'SUB101', name: 'Industrial Training', credit: 18 },
+    ],
+    6: [
+      { code: 'SUB101', name: 'Media Arts Theory and Criticism', credit: 4 },
+      { code: 'SUB102', name: 'Media Marketing and Advertising', credit: 4 },
+      { code: 'SUB103', name: 'Management in Media Industry', credit: 4 },
+      { code: 'SUB104', name: 'Occupational Safety and Health in Media Arts Production Trade', credit: 2 },
+      { code: 'SUB105', name: 'Entrepreneurship Development in Media Trade', credit: 4 },
+      { code: 'SUB106', name: 'Final Project for General Degree', credit: 18 },
+    ]
+  };
 
-    const gradePoints = {
-      'A+': 4.0,
-      'A': 4.0,
-      'A-': 3.7,
-      'B+': 3.3,
-      'B': 3.0,
-      'B-': 2.7,
-      'C+': 2.3,
-      'C': 2.0,
-      'C-': 1.7,
-      'D+': 1.3,
-      'D': 1.0,
-      'F': 0.0
-    };
+  const gradePoints = {
+    'A+': 4.0,
+    'A': 4.0,
+    'A-': 3.7,
+    'B+': 3.3,
+    'B': 3.0,
+    'B-': 2.7,
+    'C+': 2.3,
+    'C': 2.0,
+    'C-': 1.7,
+    'D+': 1.3,
+    'D': 1.0,
+    'F': 0.0
+  };
 
-    let cumulativeData = [];
+  let cumulativeData = [];
 
-    document.getElementById('semester-select').addEventListener('change', function () {
-      const sem = this.value;
-      const container = document.getElementById('subjects-container');
-      container.innerHTML = '';
-      if (!sem || !semesters[sem]) return;
+  document.getElementById('semester-select').addEventListener('change', function () {
+    const sem = this.value;
+    const container = document.getElementById('subjects-container');
+    container.innerHTML = '';
+    if (!sem || !semesters[sem]) return;
 
-      const subjects = semesters[sem];
-      const table = document.createElement('table');
-      table.innerHTML = `
-        <thead>
+    const subjects = semesters[sem];
+    const table = document.createElement('table');
+    table.innerHTML = `
+      <thead>
+        <tr>
+          <th>Subject</th>
+          <th>Credit</th>
+          <th>Grade</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${subjects.map(sub => `
           <tr>
-            <th>Subject</th>
-            <th>Credit</th>
-            <th>Grade</th>
+            <td>${sub.name}</td>
+            <td class="credit">${sub.credit}</td>
+            <td>
+              <select class="grade-select" data-credit="${sub.credit}">
+                <option value="">--</option>
+                ${Object.keys(gradePoints).map(grade => `<option value="${grade}">${grade}</option>`).join('')}
+              </select>
+            </td>
           </tr>
-        </thead>
-        <tbody>
-          ${subjects.map((sub, idx) => `
-            <tr>
-              <td>${sub.name}</td>
-              <td class="credit">${sub.credit}</td>
-              <td>
-                <select class="grade-select" data-credit="${sub.credit}">
-                  <option value="">--</option>
-                  ${Object.keys(gradePoints).map(grade => `<option value="${grade}">${grade}</option>`).join('')}
-                </select>
-              </td>
-            </tr>
-          `).join('')}
-        </tbody>
-      `;
+        `).join('')}
+      </tbody>
+    `;
 
-      container.appendChild(table);
+    container.appendChild(table);
 
-      document.querySelectorAll('.grade-select').forEach(select => {
-        select.addEventListener('change', calculateGPA);
-      });
+    document.querySelectorAll('.grade-select').forEach(select => {
+      select.addEventListener('change', calculateGPA);
+    });
+  });
+
+  function calculateGPA() {
+    const selects = document.querySelectorAll('.grade-select');
+    let totalPoints = 0;
+    let totalCredits = 0;
+
+    selects.forEach(select => {
+      const credit = parseFloat(select.dataset.credit);
+      const grade = select.value;
+      if (grade && gradePoints[grade] !== undefined) {
+        totalPoints += gradePoints[grade] * credit;
+        totalCredits += credit;
+      }
     });
 
-    function calculateGPA() {
-      const selects = document.querySelectorAll('.grade-select');
-      let totalPoints = 0;
-      let totalCredits = 0;
+    const sgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '--';
+    document.getElementById('sgpa').textContent = sgpa;
 
-      selects.forEach(select => {
-        const credit = parseFloat(select.dataset.credit);
-        const grade = select.value;
-        if (grade && gradePoints[grade] !== undefined) {
-          totalPoints += gradePoints[grade] * credit;
-          totalCredits += credit;    
-        }
-      });
+    const selectedSemester = document.getElementById('semester-select').value;
+    cumulativeData[selectedSemester - 1] = { points: totalPoints, credits: totalCredits };
 
-      const sgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '--';
-      document.getElementById('sgpa').textContent = sgpa;
+    let cumPoints = 0;
+    let cumCredits = 0;
+    cumulativeData.forEach(data => {
+      if (data) {
+        cumPoints += data.points;
+        cumCredits += data.credits;
+      }
+    });
 
-      // Store for FGPA calc
-      const selectedSemester = document.getElementById('semester-select').value;
-      cumulativeData[selectedSemester - 1] = { points: totalPoints, credits: totalCredits };
+    const fgpa = cumCredits ? (cumPoints / cumCredits).toFixed(2) : '--';
+    document.getElementById('fgpa').textContent = fgpa;
 
-      let cumPoints = 0;
-      let cumCredits = 0;
-      cumulativeData.forEach(data => {
-        if (data) {
-          cumPoints += data.points;
-          cumCredits += data.credits;
-        }
-      });
-
-      const fgpa = cumCredits ? (cumPoints / cumCredits).toFixed(2) : '--';
-      document.getElementById('fgpa').textContent = fgpa;
+    // Degree class logic
+    let degreeClass = '--';
+    if (cumulativeData.length === 6 && cumulativeData.every(d => d && d.credits > 0)) {
+      const fgpaVal = parseFloat(fgpa);
+      if (fgpaVal >= 3.7) {
+        degreeClass = '🎓 Congratulations! You got First Class!!';
+      } else if (fgpaVal >= 3.30) {
+        degreeClass = '🎉 Well done! You got Second Upper Class!';
+      } else if (fgpaVal >= 2.70) {
+        degreeClass = '👏 You got Second Lower Class.';
+      } else if (fgpaVal >= 2.00) {
+        degreeClass = '👍 You passed with an Ordinary Degree.';
+      } else {
+        degreeClass = '⚠️ Status: Incomplete. Please improve your results.';
+      }
     }
-  </script>
+
+    document.getElementById('degree-class').textContent = degreeClass;
+    document.getElementById('degree-class').textContent = degreeClass;
+
+    const degreeClassSpan = document.getElementById('degree-class');
+    degreeClassSpan.textContent = degreeClass;
+    degreeClassSpan.style.color = (degreeClass === '⚠️ Status: Incomplete. Please improve your results.') ? 'red' : 'green';
+
+
+  }
+</script>
+
 </body>
 </html>
