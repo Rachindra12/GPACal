@@ -1,0 +1,403 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Web GPA Calculator</title>
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'DM Sans', sans-serif;
+      font-optical-sizing: auto;
+      background: #f7f7f7;
+      padding: 20px;
+    }
+    .toggle-button {
+  background-color: #f0f0f0;
+  border: 1px solid #ccc;
+  padding: 10px 15px;
+  font-weight: bold;
+  cursor: pointer;
+  width: 100%;
+  text-align: left;
+  border-radius: 5px;
+  margin-top: 20px;
+}
+
+.toggle-content {
+  margin-top: 10px;
+  background: #f9f9f9;
+  padding: 15px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.toggle-content p,
+.toggle-content ul,
+.toggle-content ol {
+  text-align: justify;
+}
+
+    .container {
+      max-width: 700px;
+      width: 100%;
+      box-sizing: border-box;
+      margin: auto;
+      background: white;
+      padding: 1rem;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    }
+    input, select {
+     width: 100%; /* makes form controls full width on small screens */
+     padding: 8px;
+     margin-bottom: 10px;
+     box-sizing: border-box;
+    }
+@media (max-width: 600px) {
+    table {
+    width: 100%;
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    }
+}
+@media (max-width: 600px) {
+    body {
+    font-size: 0.9rem;
+    }
+
+    .toggle-button {
+    font-size: 0.95rem;
+    padding: 10px;
+    }
+
+    table th,
+    table td {
+    font-size: 0.85rem;
+    }
+}
+    * {
+  box-sizing: border-box;
+}
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 20px;
+    }
+    th, td {
+      border: 1px solid #ccc;
+      padding: 8px;
+      text-align: left;
+      font-size: 13px;
+    }
+    .gpa-display {
+      margin-top: 20px;
+    }
+    .grade-scale {
+      margin-top: 40px;
+    }
+    .grade-scale table {
+      width: 100%;
+    }
+    .grade-scale h2 {
+      margin-bottom: 10px;
+    }
+    p {
+  font-size: 12px; /* Or use 14px or smaller */
+}
+.toggle-content ol,
+.toggle-content ul {
+  font-size: 12px;
+}
+
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>GPA Calculator</h1>
+    <h3>B.Tech in Media Arts and Production Technology</h3>
+    <label for="semester-select">Select Semester:</label>
+    <select id="semester-select">
+      <option value="">--Select--</option>
+      <option value="1">Semester 1</option>
+      <option value="2">Semester 2</option>
+      <option value="3">Semester 3</option>
+      <option value="4">Semester 4</option>
+      <option value="5">Semester 5</option>
+      <option value="6">Semester 6</option>
+    </select>
+
+    <div id="subjects-container"></div>
+
+    <div class="gpa-display">
+      <h3><b>SGPA: <span id="sgpa">--</span></b></h3>
+      <h3><b>FGPA: <span id="fgpa">--</span></b></h3>
+    </div>
+    <div class="grade-scale">
+    <h2>Grades and Grade Points</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Grade</th>
+            <th>Point</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>A+</td><td>4.0</td></tr>
+          <tr><td>A</td><td>4.0</td></tr>
+          <tr><td>A-</td><td>3.7</td></tr>
+          <tr><td>B+</td><td>3.3</td></tr>
+          <tr><td>B</td><td>3.0</td></tr>
+          <tr><td>B-</td><td>2.7</td></tr>
+          <tr><td>C+</td><td>2.3</td></tr>
+          <tr><td>C</td><td>2.0</td></tr>
+          <tr><td>C-</td><td>1.7</td></tr>
+          <tr><td>D+</td><td>1.3</td></tr>
+          <tr><td>D</td><td>1.0</td></tr>
+          <tr><td>F</td><td>0.0</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <h2>Calculation of Semester Grade Point Average (SGPA)</h2>
+    <p style="text-align: justify;">The calculation of the Semester Grade Point Average will be based on the Grade Points earned for 
+all modules registered in a semester (except those awarded with academic concession) weighted 
+according to number of credits. The SGPA is rounded to the nearest second decimal place. The 
+SGPA is reported on transcripts and Statement of Results that may be issued for each semester. 
+The formula for calculating SGPA is given below. </p>
+        <p style="text-align:center;">
+  SGPA = 
+  <span style="text-decoration: underline;">Σ (Number of Credits × Grade point for module)</span><br>
+  Total number of credits for the semester
+</p>
+
+<h2>Final Grade Point Average (FGPA)</h2>
+<p style="text-align: justify;">The Final Grade Point Average is the absolute academic standing 
+    of the student calculated on the basis of SGPA. The FGPA will 
+    be calculated using the following formula.</p>
+
+     <div style="display: flex; justify-content: center; align-items: center;">
+    <p style="margin-right: 5px;">FGPA =</p>
+    <div style="display: grid; grid-template-rows: auto auto; justify-items: center; text-align: center;">
+        <span style="text-decoration: underline; white-space: nowrap;">Σ &nbsp;(Semester GPA)</span>
+        <span>Number of Semesters</span>
+    </div>
+</div>
+     
+</p>
+    
+    <div class="grade-scale">
+    <h2>Final Grade Point Average (FGPA) Results</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Range</th>
+            <th>FGPA</th>
+            <th>Final Results</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr><td>3.7 or Above</td><td>3.7+</td><td>First Class</td></tr>
+          <tr><td>3.30 - 3.69</td><td>3.30 - 3.69</td><td>Second Upper</td></tr>
+          <tr><td>2.70 - 3.29</td><td>2.70 - 3.29</td><td>Second Lower</td></tr>
+          <tr><td>2.00 - 2.69</td><td>2.00 - 2.69</td><td>Ordinary Pass</td></tr>
+          <tr><td>Below 2.00</td><td>Below 2.00</td><td>Incomplete</td></tr>
+        </tbody>
+      </table>
+    </div>
+   <button class="toggle-button" onclick="toggleContent('warning')">
+  Unsatisfactory Standing on Academic Performance
+</button>
+<div id="warning" class="toggle-content hidden">
+  <p style="color: red;"><strong>If the student’s SGPA falls between 1.50 and 1.99 the student will be placed on Academic Warning.</strong></p>
+  <p>A student who falls into one of the following categories of the SGPA will not be permitted to register for a new module until the SGPA is upgraded to 2.00 or more:</p>
+  <ol>
+    <li>SGPA &lt; 1.50 in any two semesters</li>
+    <li>SGPA &lt; 1.50 in any semester and 1.50 ≤ SGPA &lt; 2.00 in any two semesters</li>
+    <li>1.50 ≤ SGPA &lt; 2.00 in any three semesters</li>
+  </ol>
+  <p><strong style="color: red;">Further studentship is cancelled if you are not continuing degree for any two semesters according to the above criteria.</strong> You have to officially inform the department of IT about the reason to be absent, if you are willing to rejoin the degree later.</p>
+</div>
+
+<!-- Second collapsible tab -->
+<button class="toggle-button" onclick="toggleContent('graduation')">
+  Graduation Credit Requirements
+</button>
+<div id="graduation" class="toggle-content hidden">
+  <p>A student should satisfy the following requirements in order to be admitted to the Bachelor of Technology in Software Technology/Multimedia & Web Technology/Network Technology:</p>
+  <ol>
+    <li>A minimum total of 180 credits from modules specified.</li>
+    <li>A minimum Final Grade Point Average (FGPA) of 2.00</li>
+    <li>Any other mandatory requirement specified by the Academic Council</li>
+  </ol>
+</div>
+    <br><br>
+<a href="https://Rachindra12.github.io/GPAcal/Student Handbook MAPT Version 02_edited January 2024.pdf" target="_blank" class="toggle-button">
+  📘 View Student Handbook (PDF)
+</a>
+
+  </div>
+
+
+  <script>
+    function toggleContent(id) {
+  const section = document.getElementById(id);
+  section.classList.toggle('hidden');
+}
+
+    const semesters = {
+      1: [
+        { code: 'SUB101', name: 'Fundamentals of Mass Communication', credit: 6 },
+        { code: 'SUB102', name: 'Basic Technologies of Print Media', credit: 4 },
+        { code: 'SUB103', name: 'Basic Technologies of Television Medium', credit: 4 },
+        { code: 'SUB104', name: 'Basic Technologies of Radio Medium', credit: 4 },
+        { code: 'SUB105', name: 'Basic Technologies of New Media', credit: 4 },
+        { code: 'SUB106', name: 'Techniques of Media Arts  Product Development', credit: 4 },
+        { code: 'SUB107', name: 'Mathematics for Media Arts Production Technology', credit: 3 },
+        { code: 'SUB108', name: 'Communication Skills in English I', credit: 3 },
+      ],
+      2: [
+        { code: 'SUB101', name: 'Evolution of Mass Media I', credit: 6 },
+        { code: 'SUB102', name: 'Production Aspects of Print Media', credit: 4 },
+        { code: 'SUB103', name: 'Production Aspects of Television Medium', credit: 4 },
+        { code: 'SUB104', name: 'Production Aspects of Radio Medium', credit: 4 },
+        { code: 'SUB105', name: 'Production Aspects of New Media', credit: 4 },
+        { code: 'SUB106', name: 'Development of Sri Lankan Media I', credit: 4 },
+        { code: 'SUB107', name: 'Theorizing Convergence Media', credit: 3 },
+        { code: 'SUB108', name: 'Communication Skills in English II', credit: 3 },
+      
+      ],
+      3: [
+        { code: 'SUB101', name: 'Production Management in Media Arts', credit: 4 },
+        { code: 'SUB102', name: 'Designing Techniques of Print Media', credit: 4 },
+        { code: 'SUB103', name: 'Designing Techniques of Television Medium', credit: 4 },
+        { code: 'SUB104', name: 'Designing Techniques of Radio Medium', credit: 4 },
+        { code: 'SUB105', name: 'Designing Techniques of New Media', credit: 4 },
+        { code: 'SUB106', name: 'Elements of Art and Design', credit: 4 },
+        { code: 'SUB107', name: 'Group Project I', credit: 6 },
+      ],
+      4: [
+        { code: 'SUB101', name: 'Media Research Methods and Methodologies', credit: 6 },
+        { code: 'SUB102', name: 'Advanced Production Techniques of Print Media', credit: 4 },
+        { code: 'SUB103', name: 'Advanced Production Techniques of Television Medium', credit: 4 },
+        { code: 'SUB104', name: 'Advanced Production Techniques of Radio Medium', credit: 4 },
+        { code: 'SUB105', name: 'Advanced Production Techniques of New Media', credit: 4 },
+        { code: 'SUB106', name: 'Development of Sri Lankan Media II', credit: 4 },
+        { code: 'SUB107', name: 'Individual Project I', credit: 6 },
+      ],
+      5: [
+        { code: 'SUB101', name: 'Industrial Training', credit: 18 },
+      ],
+      6: [
+        { code: 'SUB101', name: 'Media Arts Theory and Criticism', credit: 4 },
+        { code: 'SUB102', name: 'Media Marketing and Advertising', credit: 4 },
+        { code: 'SUB103', name: 'Management in Media Industry', credit: 4 },
+        { code: 'SUB104', name: 'Occupational Safety and Health in Media Arts Production Trade', credit: 2 },
+        { code: 'SUB105', name: 'Entrepreneurship Development in Media Trade', credit: 4 },
+        { code: 'SUB106', name: 'Final Project for General Degree', credit: 18 },
+      ]
+      // Add more semesters...
+    };
+
+    const gradePoints = {
+      'A+': 4.0,
+      'A': 4.0,
+      'A-': 3.7,
+      'B+': 3.3,
+      'B': 3.0,
+      'B-': 2.7,
+      'C+': 2.3,
+      'C': 2.0,
+      'C-': 1.7,
+      'D+': 1.3,
+      'D': 1.0,
+      'F': 0.0
+    };
+
+    let cumulativeData = [];
+
+    document.getElementById('semester-select').addEventListener('change', function () {
+      const sem = this.value;
+      const container = document.getElementById('subjects-container');
+      container.innerHTML = '';
+      if (!sem || !semesters[sem]) return;
+
+      const subjects = semesters[sem];
+      const table = document.createElement('table');
+      table.innerHTML = `
+        <thead>
+          <tr>
+            <th>Subject</th>
+            <th>Credit</th>
+            <th>Grade</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${subjects.map((sub, idx) => `
+            <tr>
+              <td>${sub.name}</td>
+              <td class="credit">${sub.credit}</td>
+              <td>
+                <select class="grade-select" data-credit="${sub.credit}">
+                  <option value="">--</option>
+                  ${Object.keys(gradePoints).map(grade => `<option value="${grade}">${grade}</option>`).join('')}
+                </select>
+              </td>
+            </tr>
+          `).join('')}
+        </tbody>
+      `;
+
+      container.appendChild(table);
+
+      document.querySelectorAll('.grade-select').forEach(select => {
+        select.addEventListener('change', calculateGPA);
+      });
+    });
+
+    function calculateGPA() {
+      const selects = document.querySelectorAll('.grade-select');
+      let totalPoints = 0;
+      let totalCredits = 0;
+
+      selects.forEach(select => {
+        const credit = parseFloat(select.dataset.credit);
+        const grade = select.value;
+        if (grade && gradePoints[grade] !== undefined) {
+          totalPoints += gradePoints[grade] * credit;
+          totalCredits += credit;
+        }
+      });
+
+      const sgpa = totalCredits ? (totalPoints / totalCredits).toFixed(2) : '--';
+      document.getElementById('sgpa').textContent = sgpa;
+
+      // Store for FGPA calc
+      const selectedSemester = document.getElementById('semester-select').value;
+      cumulativeData[selectedSemester - 1] = { points: totalPoints, credits: totalCredits };
+
+      let cumPoints = 0;
+      let cumCredits = 0;
+      cumulativeData.forEach(data => {
+        if (data) {
+          cumPoints += data.points;
+          cumCredits += data.credits;
+        }
+      });
+
+      const fgpa = cumCredits ? (cumPoints / cumCredits).toFixed(2) : '--';
+      document.getElementById('fgpa').textContent = fgpa;
+    }
+  </script>
+</body>
+</html>
